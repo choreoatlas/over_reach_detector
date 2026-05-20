@@ -1,6 +1,6 @@
 """End-to-end MCP stdio tests for v0.0.3.
 
-Spawns server.py as a subprocess and talks to it via the real MCP stdio
+Spawns the MCP server as a subprocess and talks to it via the real MCP stdio
 JSON-RPC protocol (the same protocol Cursor and Claude Code use). This proves
 the server is wire-protocol-compatible, not just module-importable.
 """
@@ -13,20 +13,19 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).parent.parent
-SERVER_PATH = ROOT / "server.py"
 sys.path.insert(0, str(ROOT))
 
 # Import lazily inside tests to surface ImportError if mcp.client API differs.
 
 
 async def _call_tool_via_stdio(tool_args: dict) -> dict:
-    """Spawn server.py via stdio, initialize a session, call check_scope_tool, return parsed JSON."""
+    """Spawn the MCP server via stdio, initialize a session, call check_scope_tool, return parsed JSON."""
     from mcp import ClientSession
     from mcp.client.stdio import StdioServerParameters, stdio_client
 
     params = StdioServerParameters(
         command=sys.executable,
-        args=[str(SERVER_PATH)],
+        args=["-m", "over_reach_detector.server"],
     )
     async with stdio_client(params) as (read, write):
         async with ClientSession(read, write) as session:

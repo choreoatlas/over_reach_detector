@@ -23,8 +23,21 @@ Start the server (stdio transport): `python server.py`
 
 Register with your AI agent:
 
-- **Cursor**: edit `~/.cursor/mcp.json` and add an entry under `mcpServers` keyed `over-reach-detector` with `command: "python"` and `args: ["/absolute/path/to/server.py"]`.
-- **Claude Code**: run `claude mcp add over-reach-detector /absolute/path/to/python /absolute/path/to/server.py` (writes to `~/.claude.json`).
+- **Cursor**: in `~/.cursor/mcp.json`, add (after `pip install over-reach-detector`):
+
+```json
+{
+  "mcpServers": {
+    "over-reach-detector": {
+      "command": "over-reach-detector"
+    }
+  }
+}
+```
+
+  Dev / from source: use `"command": "python", "args": ["-m", "over_reach_detector.server"]` (run from repo root).
+
+- **Claude Code**: after `pip install over-reach-detector`, run `claude mcp add over-reach-detector over-reach-detector` (writes to `~/.claude.json`). Dev / from source: `claude mcp add over-reach-detector /absolute/path/to/python -m over_reach_detector.server`.
 
 ## The tool
 

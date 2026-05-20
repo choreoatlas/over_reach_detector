@@ -20,7 +20,7 @@ from __future__ import annotations
 
 from mcp.server.fastmcp import FastMCP
 
-from detector import check_scope, report_to_json, report_to_markdown
+from .detector import check_scope, report_to_json, report_to_markdown
 
 mcp = FastMCP("over-reach-detector")
 
@@ -59,5 +59,9 @@ def check_scope_tool(
     return report_to_json(report)
 
 
-if __name__ == "__main__":
+def main() -> None:
     mcp.run()
+
+
+if __name__ == "__main__":
+    main()

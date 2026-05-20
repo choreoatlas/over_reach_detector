@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT))
 
-from detector import check_scope, infer_category  # noqa: E402
+from over_reach_detector.detector import check_scope, infer_category  # noqa: E402
 
 FIXTURES_DIR = ROOT / "fixtures"
 

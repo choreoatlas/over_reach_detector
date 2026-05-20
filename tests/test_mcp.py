@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT))
 
-import server  # noqa: E402
+from over_reach_detector import server  # noqa: E402
 
 
 def test_server_module_loads():
