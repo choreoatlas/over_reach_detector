@@ -9,17 +9,29 @@ Compares two things:
 
 If the actual diff exceeds the declared scope, the tool returns `status=over_reach` and lists the offending files and categories.
 
-## Quick start
+## Install
 
-Install: `pip install -r requirements.txt`
+From PyPI (after 0.0.4 release):
+```bash
+pip install over-reach-detector
+```
+
+From source:
+```bash
+git clone https://github.com/choreoatlas/over_reach_detector
+cd over_reach_detector
+pip install -e .
+```
+
+## Quick start
 
 Run all tests: `python -m pytest -v`
 
-Try the CLI directly: `python detector.py --input fixtures/example_pr_1.json --format markdown`
+Try the CLI directly: `python -m over_reach_detector.detector --input fixtures/example_pr_1.json --format markdown`
 
 ## Use as MCP server
 
-Start the server (stdio transport): `python server.py`
+Start the server (stdio transport): `over-reach-detector` (or `python -m over_reach_detector.server` from source)
 
 Register with your AI agent:
 
@@ -66,7 +78,7 @@ Call `check_scope_tool` directly from Python (same logic the MCP server exposes)
 
 ```python
 import json
-import server
+from over_reach_detector import server
 
 result = server.check_scope_tool(
     declared_files=["docs/*.md"],
