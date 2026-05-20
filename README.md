@@ -66,3 +66,7 @@ report = json.loads(result)
 print(report["status"])          # "over_reach"
 print(report["file_overreach"])  # ["scripts/extra.py"]
 ```
+
+## License
+
+MIT — see [LICENSE](LICENSE).
