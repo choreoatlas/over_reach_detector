@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT))
 
-from detector import check_scope  # noqa: E402
+from detector import check_scope, infer_category  # noqa: E402
 
 FIXTURES_DIR = ROOT / "fixtures"
 
@@ -45,3 +45,11 @@ def test_empty_when_no_actual_files():
         {"files": []},
     )
     assert report.status == "empty"
+
+
+def test_license_infer_category_is_docs():
+    assert infer_category("LICENSE") == "docs"
+    assert infer_category("subdir/LICENSE") == "docs"
+    assert infer_category("COPYING") == "docs"
+    assert infer_category("vendor/COPYING") == "docs"
+    assert infer_category("CHANGELOG.md") == "docs"

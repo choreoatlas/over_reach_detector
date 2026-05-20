@@ -20,9 +20,32 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Iterable
 
+DOCS_META_FILENAMES: frozenset[str] = frozenset(
+    {
+        "LICENSE",
+        "LICENSE.md",
+        "LICENSE.txt",
+        "COPYING",
+        "NOTICE",
+        "AUTHORS",
+        "CONTRIBUTORS",
+        "CHANGELOG",
+        "CHANGELOG.md",
+    }
+)
+
+
+def _docs_meta_path_patterns() -> tuple[str, ...]:
+    patterns: list[str] = []
+    for name in sorted(DOCS_META_FILENAMES):
+        patterns.append(name)
+        patterns.append(f"*/{name}")
+    return tuple(patterns)
+
+
 CATEGORY_RULES: list[tuple[str, tuple[str, ...]]] = [
     ("tests", ("test_*.py", "*_test.py", "tests/*")),
-    ("docs", ("*.md", "docs/*", "README*")),
+    ("docs", (*_docs_meta_path_patterns(), "*.md", "docs/*", "README*")),
     ("infra", (".github/*", "Dockerfile", "*.dockerfile")),
     ("config", ("*.yml", "*.yaml", "*.toml", "*.json", "*.ini", "*.cfg")),
 ]
