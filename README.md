@@ -1,31 +1,50 @@
-# 越权检测 v0.0.1 — Authority Boundary Detector
+# 越权检测 — Authority Boundary Detector (MCP server)
 
-Detects when AI code changes exceed declared task scope. Compares declared files + categories vs. actual diff.
+Detects when AI code changes exceed declared task scope. Designed to plug into Cursor, Claude Code, and other MCP-compatible AI coding agents via the standard stdio transport.
+
+Compares two things:
+
+1. **Declared scope** — the files (as fnmatch globs) and categories (tests, docs, infra, config, code) the task is allowed to touch.
+2. **Actual diff** — the files the AI actually modified.
+
+If the actual diff exceeds the declared scope, the tool returns `status=over_reach` and lists the offending files and categories.
 
 ## Quick start
 
-Run tests: `python -m pytest tests/test_smoke.py -v`
+Install: `pip install -r requirements.txt`
 
-Run detector: `python detector.py --input fixtures/example_pr_1.json --format markdown`
+Run all tests: `python -m pytest -v`
 
-## Input format
+Try the CLI directly: `python detector.py --input fixtures/example_pr_1.json --format markdown`
 
-Provide a JSON file with two top-level keys:
+## Use as MCP server
 
-- `task_spec`: contains `declared_files` (list of fnmatch globs) and `declared_categories` (list of category names: tests, docs, infra, config, code).
-- `actual_diff`: contains `files` (list of file paths).
+Start the server (stdio transport): `python server.py`
 
-See `fixtures/example_pr_1.json` for a worked example.
+Register with your AI agent:
 
-## Output
+- **Cursor**: edit `~/.cursor/mcp.json`
+- **Claude Code**: edit `~/Library/Application Support/Claude/claude_desktop_config.json`
 
-- `status`: `in_scope` | `over_reach` | `empty`
-- `file_overreach`: files modified but not matching any glob in `declared_files`
-- `category_overreach`: categories inferred from actual files but not in `declared_categories`
-- Exit code: 1 if `over_reach`, 0 otherwise
+Add an entry under `mcpServers` keyed `over-reach-detector` with `command: "python"` and `args: ["/absolute/path/to/server.py"]`.
 
-## Scope (v0.0.1)
+## The tool
 
-In scope: file scope + category scope detection. Python only. CLI only. fnmatch-based globs.
+`check_scope_tool` takes:
 
-Out of scope (forbidden): code quality review, security audit, completeness governance, languages other than Python, MCP server (that is v0.0.2).
+- `declared_files`: list of fnmatch globs (e.g. `["docs/*.md", "tests/*.py"]`)
+- `declared_categories`: subset of `["tests", "docs", "infra", "config", "code"]`
+- `actual_files`: list of file paths the AI modified
+- `output_format`: `"json"` (default) or `"markdown"`
+
+Returns a report with:
+
+- `status`: `in_scope` (safe) | `over_reach` (block) | `empty`
+- `file_overreach`: files not matching any declared glob
+- `category_overreach`: inferred categories outside the declared set
+
+## Scope discipline
+
+**v0.0.2 in scope**: CLI + MCP stdio server + 1 tool. Python only. fnmatch-based globs.
+
+**Out of scope (forbidden)**: code quality review, security audit, completeness governance, languages other than Python, multi-tool MCP servers, HTTP/SSE transport, GitHub Actions integration. These are deliberately deferred to later versions or never.
