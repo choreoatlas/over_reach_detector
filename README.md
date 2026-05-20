@@ -23,10 +23,8 @@ Start the server (stdio transport): `python server.py`
 
 Register with your AI agent:
 
-- **Cursor**: edit `~/.cursor/mcp.json`
-- **Claude Code**: edit `~/Library/Application Support/Claude/claude_desktop_config.json`
-
-Add an entry under `mcpServers` keyed `over-reach-detector` with `command: "python"` and `args: ["/absolute/path/to/server.py"]`.
+- **Cursor**: edit `~/.cursor/mcp.json` and add an entry under `mcpServers` keyed `over-reach-detector` with `command: "python"` and `args: ["/absolute/path/to/server.py"]`.
+- **Claude Code**: run `claude mcp add over-reach-detector /absolute/path/to/python /absolute/path/to/server.py` (writes to `~/.claude.json`).
 
 ## The tool
 
@@ -45,7 +43,7 @@ Returns a report with:
 
 ## Scope discipline
 
-**v0.0.2 in scope**: CLI + MCP stdio server + 1 tool. Python only. fnmatch-based globs.
+**Current scope**: CLI + MCP stdio server + 1 tool. Python only. fnmatch-based globs.
 
 **Out of scope (forbidden)**: code quality review, security audit, completeness governance, languages other than Python, multi-tool MCP servers, HTTP/SSE transport, GitHub Actions integration. These are deliberately deferred to later versions or never.
 
