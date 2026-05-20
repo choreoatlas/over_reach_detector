@@ -1,0 +1,20 @@
+{
+  "name": "Stylized: bounded docs task that touched code (PR #41 archetype)",
+  "task_spec": {
+    "declared_files": ["docs/*.md"],
+    "declared_categories": ["docs"]
+  },
+  "actual_diff": {
+    "files": [
+      "docs/customer_milestone.md",
+      "docs/usage.md",
+      "scripts/render_demo.py",
+      "package/__init__.py"
+    ]
+  },
+  "expected": {
+    "status": "over_reach",
+    "file_overreach": ["package/__init__.py", "scripts/render_demo.py"],
+    "category_overreach": ["code"]
+  }
+}
