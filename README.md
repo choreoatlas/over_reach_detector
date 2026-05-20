@@ -48,3 +48,23 @@ Returns a report with:
 **v0.0.2 in scope**: CLI + MCP stdio server + 1 tool. Python only. fnmatch-based globs.
 
 **Out of scope (forbidden)**: code quality review, security audit, completeness governance, languages other than Python, multi-tool MCP servers, HTTP/SSE transport, GitHub Actions integration. These are deliberately deferred to later versions or never.
+
+## Example usage
+
+Call `check_scope_tool` directly from Python (same logic the MCP server exposes):
+
+```python
+import json
+import server
+
+result = server.check_scope_tool(
+    declared_files=["docs/*.md"],
+    declared_categories=["docs"],
+    actual_files=["docs/a.md", "scripts/extra.py"],
+    output_format="json",
+)
+
+report = json.loads(result)
+print(report["status"])          # "over_reach"
+print(report["file_overreach"])  # ["scripts/extra.py"]
+```
