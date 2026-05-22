@@ -1,5 +1,7 @@
 # 越权检测 — Authority Boundary Detector (MCP server)
 
+mcp-name: io.github.choreoatlas/over-reach-detector
+
 Detects when AI code changes exceed declared task scope. Designed to plug into Cursor, Claude Code, and other MCP-compatible AI coding agents via the standard stdio transport.
 
 Compares two things:
@@ -11,7 +13,7 @@ If the actual diff exceeds the declared scope, the tool returns `status=over_rea
 
 ## Install
 
-From PyPI (after 0.0.4 release):
+From PyPI:
 ```bash
 pip install over-reach-detector
 ```
