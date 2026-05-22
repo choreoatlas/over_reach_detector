@@ -1,8 +1,8 @@
-# 越权检测 — Authority Boundary Detector (MCP server)
+# Over-Reach Detector (MCP server)
 
-mcp-name: io.github.choreoatlas/over-reach-detector
+<!-- mcp-name: io.github.choreoatlas/over-reach-detector -->
 
-Detects when AI code changes exceed declared task scope. Designed to plug into Cursor, Claude Code, and other MCP-compatible AI coding agents via the standard stdio transport.
+Detect and report when AI coding agents change files outside their declared task scope. Designed to plug into Cursor, Claude Code, and other MCP-compatible AI coding agents via the standard stdio transport.
 
 Compares two things:
 
@@ -10,6 +10,14 @@ Compares two things:
 2. **Actual diff** — the files the AI actually modified.
 
 If the actual diff exceeds the declared scope, the tool returns `status=over_reach` and lists the offending files and categories.
+
+## What this tool does and does not do
+
+`over-reach-detector` is an audit/disclosure tool, not a sandbox and not a blocker.
+
+It compares a declared task scope with the actual files/categories changed by an AI coding agent. If the actual changes exceed the declared scope, it reports that mismatch.
+
+It does not prevent file writes by itself. It does not decide whether to revert, approve, or block a change. The caller remains responsible for enforcement, rollback, or human review.
 
 ## Install
 
@@ -64,7 +72,7 @@ Register with your AI agent:
 
 Returns a report with:
 
-- `status`: `in_scope` (safe) | `over_reach` (block) | `empty`
+- `status`: `in_scope` (within declared scope) | `over_reach` (reported mismatch) | `empty`
 - `file_overreach`: files not matching any declared glob
 - `category_overreach`: inferred categories outside the declared set
 
